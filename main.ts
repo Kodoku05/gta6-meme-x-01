@@ -35,6 +35,19 @@ function mulberry32(seed: number): () => number {
   };
 }
 
+// One gold "$" coin, tilted for a casual tossed look. textDy is the vertical
+// offset of the "$" glyph from the coin centre (tuned per coin size).
+function coin(cx: number, cy: number, r: number, rot: number, fontSize: number, textDy: number): string {
+  return `<g transform="rotate(${rot} ${cx} ${cy})"><circle cx="${cx}" cy="${cy}" r="${r}" fill="#ffd319" stroke="#8a5a00" stroke-width="4"/><text x="${cx}" y="${cy + textDy}" text-anchor="middle" font-family="'Noto Sans',sans-serif" font-weight="900" font-size="${fontSize}" fill="#7a4d00">$</text></g>`;
+}
+
+// One bold headline line with the poster's outlined look. letterSpacing is only
+// emitted when given (the middle lines have none).
+function headline(x: number, y: number, fontSize: number, fill: string, strokeWidth: number, text: string, letterSpacing?: number): string {
+  const ls = letterSpacing === undefined ? '' : ` letter-spacing="${letterSpacing}"`;
+  return `<text x="${x}" y="${y}" text-anchor="middle" font-family="'Noto Sans',sans-serif" font-weight="900" font-size="${fontSize}"${ls} fill="${fill}" stroke="#191419" stroke-width="${strokeWidth}" paint-order="stroke" stroke-linejoin="round">${text}</text>`;
+}
+
 function buildMemeSvg(): string {
   const rand = mulberry32(20261119);
 
@@ -116,14 +129,14 @@ ${grid}
 <g transform="rotate(-4 600 630)">
 <svg x="400" y="430" width="400" height="400" viewBox="0 0 32 32">${MARK_INNER}</svg>
 </g>
-<g transform="rotate(-12 295 470)"><circle cx="295" cy="470" r="32" fill="#ffd319" stroke="#8a5a00" stroke-width="4"/><text x="295" y="482" text-anchor="middle" font-family="'Noto Sans',sans-serif" font-weight="900" font-size="38" fill="#7a4d00">$</text></g>
-<g transform="rotate(10 912 445)"><circle cx="912" cy="445" r="27" fill="#ffd319" stroke="#8a5a00" stroke-width="4"/><text x="912" y="455" text-anchor="middle" font-family="'Noto Sans',sans-serif" font-weight="900" font-size="32" fill="#7a4d00">$</text></g>
-<g transform="rotate(-8 940 715)"><circle cx="940" cy="715" r="23" fill="#ffd319" stroke="#8a5a00" stroke-width="4"/><text x="940" y="724" text-anchor="middle" font-family="'Noto Sans',sans-serif" font-weight="900" font-size="27" fill="#7a4d00">$</text></g>
-<text x="600" y="122" text-anchor="middle" font-family="'Noto Sans',sans-serif" font-weight="900" font-size="92" letter-spacing="2" fill="#ffffff" stroke="#191419" stroke-width="14" paint-order="stroke" stroke-linejoin="round">WAITED 13 YEARS</text>
-<text x="600" y="220" text-anchor="middle" font-family="'Noto Sans',sans-serif" font-weight="900" font-size="92" letter-spacing="2" fill="#ffffff" stroke="#191419" stroke-width="14" paint-order="stroke" stroke-linejoin="round">FOR GTA 6&#8230;</text>
-<text x="600" y="992" text-anchor="middle" font-family="'Noto Sans',sans-serif" font-weight="900" font-size="54" fill="#ffffff" stroke="#191419" stroke-width="9" paint-order="stroke" stroke-linejoin="round">MY AGENT SPENT THE WAIT</text>
-<text x="600" y="1062" text-anchor="middle" font-family="'Noto Sans',sans-serif" font-weight="900" font-size="54" fill="#ffffff" stroke="#191419" stroke-width="9" paint-order="stroke" stroke-linejoin="round">EARNING REAL MONEY ON</text>
-<text x="600" y="1148" text-anchor="middle" font-family="'Noto Sans',sans-serif" font-weight="900" font-size="78" letter-spacing="3" fill="#ff88c4" stroke="#191419" stroke-width="11" paint-order="stroke" stroke-linejoin="round">MAKE.FUN</text>
+${coin(295, 470, 32, -12, 38, 12)}
+${coin(912, 445, 27, 10, 32, 10)}
+${coin(940, 715, 23, -8, 27, 9)}
+${headline(600, 122, 92, '#ffffff', 14, 'WAITED 13 YEARS', 2)}
+${headline(600, 220, 92, '#ffffff', 14, 'FOR GTA 6&#8230;', 2)}
+${headline(600, 992, 54, '#ffffff', 9, 'MY AGENT SPENT THE WAIT')}
+${headline(600, 1062, 54, '#ffffff', 9, 'EARNING REAL MONEY ON')}
+${headline(600, 1148, 78, '#ff88c4', 11, 'MAKE.FUN', 3)}
 </svg>
 `;
 }
